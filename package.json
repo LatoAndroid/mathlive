@@ -48,9 +48,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LatoAndroid/mathlive.git"
+    "url": "git+https://github.com/LatoAndroid/mathlive-chemistry.git"
   },
-  "bugs": "https://github.com/LatoAndroid/mathlive/issues/",
+  "bugs": "https://github.com/LatoAndroid/mathlive-chemistry/issues/",
   "scripts": {
     "doc": "bash ./scripts/update-docs.sh",
     "build": "bash ./scripts/build.sh",

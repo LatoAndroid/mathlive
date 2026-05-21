@@ -102,6 +102,7 @@ import { MathfieldElement } from 'mathlive-chemistry';
 
 ### 和原项目的关系
 
+- 本 fork：[LatoAndroid/mathlive-chemistry](https://github.com/LatoAndroid/mathlive-chemistry)
 - 原项目：[arnog/mathlive](https://github.com/arnog/mathlive)
 - 原作者：Arno Gourdol and MathLive contributors
 - 原许可证：MIT
@@ -205,6 +206,7 @@ import { MathfieldElement } from 'mathlive-chemistry';
 
 ### Relationship to MathLive
 
+- This fork: [LatoAndroid/mathlive-chemistry](https://github.com/LatoAndroid/mathlive-chemistry)
 - Original project: [arnog/mathlive](https://github.com/arnog/mathlive)
 - Original author: Arno Gourdol and MathLive contributors
 - License: MIT
