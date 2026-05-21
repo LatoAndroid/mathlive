@@ -598,7 +598,7 @@ test('delete at editable mhchem boundaries removes content, not the whole atom',
     .locator('#mf-1')
     .evaluate((mfe: MathfieldElement) => {
       mfe.value = '\\ce{2H2 + O2 -> 2H2O}';
-      mfe.position = (mfe as any)._mathfield.model.lastOffset;
+      mfe.position = mfe.lastOffset;
       mfe.executeCommand('deleteBackward');
       const backward = mfe.value;
 
