@@ -583,7 +583,7 @@ function renderFormulaText(
   const body = runs
     .map((run) =>
       run.subscript
-        ? `<tspan baseline-shift="sub" font-size="${SUBSCRIPT_FONT_SIZE}">${escapeSvgText(
+        ? `<tspan baseline-shift="-0.20em" font-size="${SUBSCRIPT_FONT_SIZE}">${escapeSvgText(
             run.text
           )}</tspan>`
         : escapeSvgText(run.text)
