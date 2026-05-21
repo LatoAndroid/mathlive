@@ -49,7 +49,8 @@ const LABEL_FONT_SIZE = 0.9;
 const SUBSCRIPT_FONT_SIZE = 0.62;
 const LABEL_ASCENT = 0.9;
 const LABEL_DESCENT = 0.24;
-const SVG_X_PADDING = 0.04;
+const SVG_LEFT_PADDING = 0.12;
+const SVG_RIGHT_PADDING = 0.04;
 const SVG_Y_PADDING = 0.12;
 const TEXT_BOUND_PADDING = 0.05;
 const LABEL_GLYPH_WIDTH = 0.64;
@@ -416,9 +417,9 @@ function makeMeasuredChemfigSvgBox(
   selected: boolean,
   depth = 0.4
 ): Box {
-  const shiftX = SVG_X_PADDING - bounds.minX;
+  const shiftX = SVG_LEFT_PADDING - bounds.minX;
   const shiftY = SVG_Y_PADDING - bounds.minY;
-  const width = bounds.maxX - bounds.minX + SVG_X_PADDING * 2;
+  const width = bounds.maxX - bounds.minX + SVG_LEFT_PADDING + SVG_RIGHT_PADDING;
   const totalHeight = bounds.maxY - bounds.minY + SVG_Y_PADDING * 2;
 
   return makeChemfigSvgBox(
