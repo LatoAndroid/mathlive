@@ -49,6 +49,8 @@ const LABEL_FONT_SIZE = 0.9;
 const SUBSCRIPT_FONT_SIZE = 0.62;
 const LABEL_ASCENT = 0.9;
 const LABEL_DESCENT = 0.24;
+const SVG_PADDING = 0.12;
+const TEXT_BOUND_PADDING = 0.06;
 
 export class ChemfigAtom extends Atom {
   private readonly arg: string;
@@ -310,6 +312,7 @@ function renderRing(structure: RingChemfig, selected: boolean): Box {
   const vertices: { x: number; y: number }[] = [];
   const parts: string[] = [];
   const bounds = createSvgBounds();
+  const branchBaselines: number[] = [];
 
   for (let i = 0; i < structure.size; i++) {
     const angle = -Math.PI / 6 + (i * 2 * Math.PI) / structure.size;
@@ -351,9 +354,18 @@ function renderRing(structure: RingChemfig, selected: boolean): Box {
     parts.push(renderFormulaText(branch.label, label.x, label.y, anchor));
     includeLineBounds(bounds, from.x, from.y, to.x, to.y);
     includeTextBounds(bounds, branch.label, label.x, label.y, anchor);
+    if (anchor !== 'middle') branchBaselines.push(label.y);
   }
 
-  return makeMeasuredChemfigSvgBox(parts.join(''), bounds, selected);
+  const depth =
+    branchBaselines.length > 0
+      ? Math.max(
+          0.25,
+          Math.min(0.55, bounds.maxY - branchBaselines[0] + SVG_PADDING)
+        )
+      : 0.4;
+
+  return makeMeasuredChemfigSvgBox(parts.join(''), bounds, selected, depth);
 }
 
 function renderUnsupportedChemfig(arg: string, selected: boolean): Box {
@@ -402,7 +414,7 @@ function makeMeasuredChemfigSvgBox(
   selected: boolean,
   depth = 0.4
 ): Box {
-  const padding = 0.3;
+  const padding = SVG_PADDING;
   const shiftX = padding - bounds.minX;
   const shiftY = padding - bounds.minY;
   const width = bounds.maxX - bounds.minX + padding * 2;
@@ -454,11 +466,19 @@ function includeTextBounds(
   y: number,
   anchor: 'start' | 'middle' | 'end'
 ): void {
-  const width = estimateFormulaWidth(label) + 0.22;
+  const width = estimateFormulaWidth(label);
   const minX =
-    anchor === 'end' ? x - width : anchor === 'middle' ? x - width / 2 : x;
+    anchor === 'end'
+      ? x - width - TEXT_BOUND_PADDING
+      : anchor === 'middle'
+        ? x - width / 2 - TEXT_BOUND_PADDING
+        : x - TEXT_BOUND_PADDING;
   const maxX =
-    anchor === 'end' ? x : anchor === 'middle' ? x + width / 2 : x + width;
+    anchor === 'end'
+      ? x + TEXT_BOUND_PADDING
+      : anchor === 'middle'
+        ? x + width / 2 + TEXT_BOUND_PADDING
+        : x + width + TEXT_BOUND_PADDING;
 
   includePoint(bounds, minX, y - LABEL_ASCENT);
   includePoint(bounds, maxX, y + LABEL_DESCENT);
