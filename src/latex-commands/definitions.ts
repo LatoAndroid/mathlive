@@ -6,6 +6,7 @@
  */
 
 import './accents';
+import './chemfig';
 import './enclose';
 import './environments';
 import './extensible-symbols';

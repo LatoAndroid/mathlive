@@ -227,6 +227,7 @@ export type AtomType =
   // by environments such as `matrix`, `cases`, etc...
   | 'box' // A border drawn around an expression and change its background color
   | 'chem' // A chemical formula (mhchem)
+  | 'chemfig' // A simple organic structure formula
   | 'choice' // A \\mathchoice command
   | 'composition' // IME composition area
   | 'delim'

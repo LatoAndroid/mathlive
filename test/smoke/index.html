@@ -362,8 +362,8 @@
       try {
         setHtml("latex", latex);
 
-        if (hasMhchemCommand(latex)) {
-          const message = "Not available for mhchem formulas.";
+        if (hasChemistryCommand(latex)) {
+          const message = "Not available for chemistry formulas.";
           setHtml("typst", message);
           setHtml("ascii-math", message);
           setHtml("mathml", message);
@@ -394,8 +394,8 @@
       }
     }
 
-    function hasMhchemCommand(latex) {
-      return /\\(?:ce|pu)\s*\{/.test(latex);
+    function hasChemistryCommand(latex) {
+      return /\\(?:ce|pu|chemfig)\s*\{/.test(latex);
     }
 
 

@@ -203,6 +203,28 @@ describe('CHEM SERIALIZATION', () => {
   });
 });
 
+describe('CHEMFIG SERIALIZATION', () => {
+  function serialize(latex: string): string {
+    const atoms = parseLatex(latex, { parseMode: 'math' });
+    return Atom.serialize(atoms, { defaultMode: 'math' });
+  }
+
+  test.each([
+    '\\chemfig{CH_3-CH_2-OH}',
+    '\\chemfig{CH_2=CH_2}',
+    '\\chemfig{HC#CH}',
+    '\\chemfig{CH_3-C(=O)-OH}',
+    '\\chemfig{*6(-=-=-=)}',
+    '\\chemfig{*6(-=-(-CH_3)-=-)}',
+    '\\chemfig{*6(-=-(-NO_2)-=-)}',
+    '\\chemfig{*6(-=-(-COOH)-=-)}',
+  ])('%#/ %p renders and serializes', (input) => {
+    expect(error(input)).toBe('no-error');
+    expect(serialize(input)).toBe(input);
+    expect(convertLatexToMarkup(input)).toContain('ML__chemfig');
+  });
+});
+
 describe('REST* ARGUMENT COMMANDS (issue #2570)', () => {
   // Commands with {:rest*} deferred arguments should handle braced arguments
   test.each([
