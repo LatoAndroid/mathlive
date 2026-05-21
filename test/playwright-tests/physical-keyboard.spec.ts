@@ -589,6 +589,33 @@ test('delete range with sqrt - all content (issue #2686)', async ({ page }) => {
   expect(result).toBe('+x');
 });
 
+test('delete at editable mhchem boundaries removes content, not the whole atom', async ({
+  page,
+}) => {
+  await page.goto('/dist/playwright-test-page/');
+
+  const result = await page
+    .locator('#mf-1')
+    .evaluate((mfe: MathfieldElement) => {
+      mfe.value = '\\ce{2H2 + O2 -> 2H2O}';
+      mfe.position = (mfe as any)._mathfield.model.lastOffset;
+      mfe.executeCommand('deleteBackward');
+      const backward = mfe.value;
+
+      mfe.value = '\\ce{2H2 + O2 -> 2H2O}';
+      mfe.position = 0;
+      mfe.executeCommand('deleteForward');
+      const forward = mfe.value;
+
+      return { backward, forward };
+    });
+
+  expect(result).toEqual({
+    backward: '\\ce{2H2 + O2 -> 2H2}',
+    forward: '\\ce{H2 + O2 -> 2H2O}',
+  });
+});
+
 test('delete range with empty sqrt after deletion (issue #2686)', async ({
   page,
 }) => {

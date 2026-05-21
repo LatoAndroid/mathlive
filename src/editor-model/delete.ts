@@ -383,6 +383,21 @@ function onDelete(
   return false;
 }
 
+function editableChemDeleteTarget(
+  atom: Atom | null | undefined,
+  direction: 'forward' | 'backward'
+): Atom | null | undefined {
+  if (atom?.type !== 'chem' || atom.captureSelection || !atom.hasChildren)
+    return atom;
+
+  const target =
+    direction === 'backward'
+      ? atom.getFinalBaseElement()
+      : atom.getInitialBaseElement();
+
+  return target === atom ? atom : target;
+}
+
 /**
  * Delete the item at the current position
  */
@@ -399,6 +414,8 @@ export function deleteBackward(model: _Model): boolean {
     { content: true, selection: true, type: 'deleteContentBackward' },
     () => {
       let target: Atom | null = model.at(model.position);
+
+      target = editableChemDeleteTarget(target, 'backward') ?? null;
 
       if (target && onDelete(model, 'backward', target)) return;
 
@@ -455,6 +472,8 @@ export function deleteForward(model: _Model): boolean {
     { content: true, selection: true, type: 'deleteContentForward' },
     () => {
       let target: Atom | undefined = model.at(model.position).rightSibling;
+
+      target = editableChemDeleteTarget(target, 'forward') ?? undefined;
 
       if (target && onDelete(model, 'forward', target)) return;
 
