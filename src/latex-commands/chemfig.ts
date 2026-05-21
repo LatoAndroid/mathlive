@@ -49,8 +49,11 @@ const LABEL_FONT_SIZE = 0.9;
 const SUBSCRIPT_FONT_SIZE = 0.62;
 const LABEL_ASCENT = 0.9;
 const LABEL_DESCENT = 0.24;
-const SVG_PADDING = 0.12;
-const TEXT_BOUND_PADDING = 0.06;
+const SVG_X_PADDING = 0.12;
+const SVG_Y_PADDING = 0.12;
+const TEXT_BOUND_PADDING = 0.05;
+const LABEL_GLYPH_WIDTH = 0.64;
+const SUBSCRIPT_GLYPH_WIDTH = 0.32;
 
 export class ChemfigAtom extends Atom {
   private readonly arg: string;
@@ -361,7 +364,7 @@ function renderRing(structure: RingChemfig, selected: boolean): Box {
     branchBaselines.length > 0
       ? Math.max(
           0.25,
-          Math.min(0.55, bounds.maxY - branchBaselines[0] + SVG_PADDING)
+          Math.min(0.55, bounds.maxY - branchBaselines[0] + SVG_Y_PADDING)
         )
       : 0.4;
 
@@ -414,11 +417,10 @@ function makeMeasuredChemfigSvgBox(
   selected: boolean,
   depth = 0.4
 ): Box {
-  const padding = SVG_PADDING;
-  const shiftX = padding - bounds.minX;
-  const shiftY = padding - bounds.minY;
-  const width = bounds.maxX - bounds.minX + padding * 2;
-  const totalHeight = bounds.maxY - bounds.minY + padding * 2;
+  const shiftX = SVG_X_PADDING - bounds.minX;
+  const shiftY = SVG_Y_PADDING - bounds.minY;
+  const width = bounds.maxX - bounds.minX + SVG_X_PADDING * 2;
+  const totalHeight = bounds.maxY - bounds.minY + SVG_Y_PADDING * 2;
 
   return makeChemfigSvgBox(
     `<g transform="translate(${toSvgNumber(shiftX)}, ${toSvgNumber(
@@ -629,7 +631,10 @@ function mergeAdjacentFormulaRuns(runs: FormulaRun[]): FormulaRun[] {
 
 function estimateFormulaWidth(label: string): number {
   return parseFormulaRuns(label).reduce(
-    (acc, run) => acc + run.text.length * (run.subscript ? 0.3 : 0.58),
+    (acc, run) =>
+      acc +
+      run.text.length *
+        (run.subscript ? SUBSCRIPT_GLYPH_WIDTH : LABEL_GLYPH_WIDTH),
     0.1
   );
 }
