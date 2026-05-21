@@ -356,7 +356,9 @@ export class ChemAtom extends Atom {
   }
 
   render(context: Context): Box {
-    const box = Atom.createBox(context, this.body, { type: 'inner' })!;
+    const box = Atom.createBox(context, this.body, {
+      type: this.editable ? 'ord' : 'inner',
+    })!;
 
     if (this.caret) box.caret = this.caret;
     // Need to bind the group so that the DOM element can be matched
